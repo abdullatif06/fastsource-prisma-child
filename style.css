@@ -13,3 +13,292 @@
 
 /* =Theme customization starts here
 ------------------------------------------------------------ */
+
+/* ============================================================
+   PHASE 1 — GLOBAL TYPOGRAPHY
+   Modern SaaS pairing: Manrope (headings) + Inter (body/UI).
+   Loaded from Google Fonts. Overrides Prisma's --theme-font-*
+   variables so the pairing cascades site-wide without patching
+   every selector. Elementor per-element fonts are left intact.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
+
+:root {
+	--fs-font-heading: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--fs-font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+	--fs-accent: #B8E210;      /* lime-green brand accent */
+	--fs-accent-dark: #9ec10a; /* darker step for hover/contrast */
+}
+
+/* Map the theme's own font variables to our pairing so buttons,
+   menus and skin-driven elements inherit it automatically. */
+:root {
+	--theme-font-p_font-family: var(--fs-font-body);
+	--theme-font-h1_font-family: var(--fs-font-heading);
+	--theme-font-h2_font-family: var(--fs-font-heading);
+	--theme-font-h3_font-family: var(--fs-font-heading);
+	--theme-font-h4_font-family: var(--fs-font-heading);
+	--theme-font-h5_font-family: var(--fs-font-heading);
+	--theme-font-h6_font-family: var(--fs-font-heading);
+	--theme-font-button_font-family: var(--fs-font-heading);
+	--theme-font-info_font-family: var(--fs-font-body);
+	--theme-font-menu_font-family: var(--fs-font-heading);
+}
+
+/* Base body copy */
+body,
+.page_wrap,
+.sc_layouts_row,
+input, textarea, select, button {
+	font-family: var(--fs-font-body);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings — tighter tracking + line-height for a crisp SaaS look */
+h1, h2, h3, h4, h5, h6,
+.sc_layouts_title_title,
+.entry-title,
+.widget_title {
+	font-family: var(--fs-font-heading);
+	letter-spacing: -0.01em;
+	line-height: 1.15;
+}
+
+h1, .sc_layouts_title_title { letter-spacing: -0.02em; }
+
+/* Slightly airier body reading rhythm */
+p { line-height: 1.7; }
+
+
+/* ============================================================
+   PHASE 2 — HEADER / NAV POLISH
+   Refines the dark custom header: nav hover/active states in the
+   lime accent, consistent spacing, polished social icons, and a
+   subtle bottom edge so the bar reads as its own layer.
+   Scoped to .top_panel so nothing outside the header is touched.
+   ============================================================ */
+
+/* Give the dark bar a defined lower edge + smooth transitions
+   (transitions also set up the Phase 3 shrink animation). */
+.top_panel.top_panel_custom {
+	border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+	transition: padding 0.28s ease, background-color 0.28s ease, box-shadow 0.28s ease;
+}
+
+/* --- Main menu links --- */
+.top_panel .sc_layouts_menu_nav > li > a {
+	font-weight: 600;
+	letter-spacing: 0.005em;
+	transition: color 0.2s ease;
+}
+
+/* Hover + current-item text colour in the brand accent.
+   Theme forces these to white with !important, so we match its
+   specificity (:not(.menu-collapse)) and override with !important. */
+.top_panel .menu_hover_zoom_line .sc_layouts_menu_nav > li:not(.menu-collapse) > a:hover,
+.top_panel .menu_hover_zoom_line .sc_layouts_menu_nav > li:not(.menu-collapse).sfHover > a,
+.top_panel .menu_hover_zoom_line .sc_layouts_menu_nav > li.current-menu-item > a,
+.top_panel .menu_hover_zoom_line .sc_layouts_menu_nav > li.current-menu-parent > a,
+.top_panel .menu_hover_zoom_line .sc_layouts_menu_nav > li.current-menu-ancestor > a {
+	color: var(--fs-accent) !important;
+}
+
+/* The animated underline (:after) uses the theme's text-dark
+   colour by default — recolour it to the brand accent. */
+.top_panel .menu_hover_zoom_line .sc_layouts_menu_nav > li:not(.menu-collapse) > a:after {
+	background-color: var(--fs-accent);
+}
+
+/* When the user is hovering the menu, the accent should follow the
+   pointer only. Any current-page item that ISN'T being hovered drops
+   back to normal white so it no longer competes with the hovered link. */
+.top_panel .menu_hover_zoom_line .sc_layouts_menu_nav:hover > li.current-menu-item:not(:hover) > a,
+.top_panel .menu_hover_zoom_line .sc_layouts_menu_nav:hover > li.current-menu-parent:not(:hover) > a,
+.top_panel .menu_hover_zoom_line .sc_layouts_menu_nav:hover > li.current-menu-ancestor:not(:hover) > a {
+	color: #fff !important;
+}
+/* ...and its underline retracts too, so only the hovered item shows one. */
+.top_panel .menu_hover_zoom_line .sc_layouts_menu_nav:hover > li.current-menu-item:not(:hover) > a:after,
+.top_panel .menu_hover_zoom_line .sc_layouts_menu_nav:hover > li.current-menu-parent:not(:hover) > a:after,
+.top_panel .menu_hover_zoom_line .sc_layouts_menu_nav:hover > li.current-menu-ancestor:not(:hover) > a:after {
+	width: 0;
+}
+
+/* --- Dropdown submenus --- */
+.top_panel .sc_layouts_menu_nav ul.sub-menu {
+	border-radius: 10px;
+	overflow: hidden;
+	box-shadow: 0 12px 30px rgba(0, 0, 0, 0.35);
+}
+.top_panel .sc_layouts_menu_nav ul.sub-menu > li > a {
+	transition: background-color 0.18s ease, color 0.18s ease;
+}
+.top_panel .sc_layouts_menu_nav ul.sub-menu > li > a:hover {
+	color: var(--fs-accent);
+}
+
+/* --- Social icons --- */
+.top_panel .sc_socials .social_item {
+	transition: transform 0.2s ease, color 0.2s ease;
+}
+.top_panel .sc_socials .social_item:hover {
+	color: var(--fs-accent);
+	transform: translateY(-2px);
+}
+
+
+/* ============================================================
+   PHASE 3 — STICKY + SHRINK ON SCROLL
+   This Elementor header is position:absolute and scrolls away
+   with the page, so the theme's built-in fixed mechanism never
+   engages here. A small scroll listener (functions.php) toggles
+   `.fs-sticky-on` on `.top_panel` past ~120px; the rules below
+   pin it, give it a solid dark background (it was transparent
+   over the hero), shrink it, and add depth. It slides in for a
+   polished reveal rather than snapping.
+   ============================================================ */
+
+/* Smooth animation for the whole header + inner Elementor sections */
+.top_panel.top_panel_custom,
+.top_panel.top_panel_custom .elementor-section {
+	transition: padding 0.28s ease, background-color 0.28s ease,
+	            box-shadow 0.28s ease, transform 0.28s ease;
+}
+
+/* Pinned + compact state */
+.top_panel.top_panel_custom.fs-sticky-on {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	z-index: 8000;
+	background-color: rgba(20, 20, 22, 0.92) !important; /* solid-ish dark */
+	backdrop-filter: saturate(140%) blur(8px);
+	-webkit-backdrop-filter: saturate(140%) blur(8px);
+	box-shadow: 0 8px 28px rgba(0, 0, 0, 0.30);
+	border-bottom: 1px solid rgba(184, 226, 16, 0.28); /* accent hairline */
+	animation: fsHeaderDrop 0.32s ease both;
+}
+
+@keyframes fsHeaderDrop {
+	from { transform: translateY(-100%); }
+	to   { transform: translateY(0); }
+}
+
+/* Shrink the inner section padding so the pinned bar is slimmer */
+.top_panel.top_panel_custom.fs-sticky-on .elementor-section {
+	padding-top: 4px !important;
+	padding-bottom: 4px !important;
+}
+
+/* Trim the logo a touch in the compact bar */
+.top_panel.top_panel_custom.fs-sticky-on .sc_layouts_logo .logo_image {
+	max-height: 46px;
+	width: auto;
+	transition: max-height 0.28s ease;
+}
+
+
+/* ============================================================
+   PHASE 4 — NAV LAYOUT FIX
+   The theme marks the menu `sc_layouts_menu_dir_horizontal` but
+   the horizontal flex rules aren't applying on this page, so the
+   items fall back to a stacked, bulleted browser list. Force a
+   compact, centered, single-line row and strip the bullets.
+   ============================================================ */
+
+/* Center the menu widget within its column */
+.top_panel .elementor-widget-trx_sc_layouts_menu .elementor-widget-container {
+	display: flex;
+	justify-content: center;
+}
+
+/* The <nav> and its <ul> become a centered horizontal flex row */
+.top_panel nav.sc_layouts_menu {
+	width: auto;
+}
+.top_panel .sc_layouts_menu_nav {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: nowrap;
+	align-items: center;
+	justify-content: center;
+	gap: 2px;
+	margin: 0;
+	padding-left: 0;
+	list-style: none;
+}
+
+/* Top-level items: inline, no float, no bullets.
+   position:relative is REQUIRED so the absolute dropdown anchors
+   to its parent item (the flex change had dropped it to static). */
+.top_panel .sc_layouts_menu_nav > li {
+	position: relative;
+	display: flex;
+	align-items: center;
+	float: none;
+	margin: 0;
+	list-style: none;
+	list-style-type: none;
+}
+.top_panel .sc_layouts_menu_nav > li::before,
+.top_panel .sc_layouts_menu_nav > li::marker {
+	content: none;
+	display: none;
+}
+
+/* Top-level links: one line, slim even padding for a compact bar */
+.top_panel .sc_layouts_menu_nav > li > a {
+	white-space: nowrap;
+	padding: 0.55em 0.9em;
+	line-height: 1.2;
+}
+
+/* --- Dropdown (sub-menu) — restore proper flyout behavior ---
+   The flex row above must NOT cascade into the dropdown, and the
+   theme's absolute positioning isn't applying here, so we set it
+   explicitly: a stacked, compact panel anchored under its parent. */
+.top_panel .sc_layouts_menu_nav ul.sub-menu {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	display: block;          /* stacked, NOT a flex row */
+	min-width: 200px;
+	margin: 0;
+	padding: 8px 0;
+	list-style: none;
+	z-index: 8100;
+}
+
+/* Dropdown items: stacked, no bullets, no flex inheritance */
+.top_panel .sc_layouts_menu_nav ul.sub-menu > li {
+	position: relative;
+	display: block;
+	float: none;
+	width: 100%;
+	margin: 0;
+	list-style: none;
+	list-style-type: none;
+}
+.top_panel .sc_layouts_menu_nav ul.sub-menu > li::before,
+.top_panel .sc_layouts_menu_nav ul.sub-menu > li::marker {
+	content: none;
+	display: none;
+}
+
+/* Dropdown links: compact rows with tight, consistent spacing */
+.top_panel .sc_layouts_menu_nav ul.sub-menu > li > a {
+	display: block;
+	white-space: nowrap;
+	padding: 8px 20px;
+	font-size: 14px;
+	line-height: 1.4;
+}
+
+/* Nested (3rd-level) submenus fly out to the side, not below */
+.top_panel .sc_layouts_menu_nav ul.sub-menu ul.sub-menu {
+	top: 0;
+	left: 100%;
+}
