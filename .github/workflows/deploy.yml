@@ -25,3 +25,7 @@ jobs:
             **/.git*
             **/.git*/**
             **/.github/**
+            REDESIGN-PLAN.html
+            REDESIGN-PLAN.md
+            TEAM-WORKFLOW.md
+            Fastsource identity/**

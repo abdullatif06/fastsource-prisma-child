@@ -15,20 +15,77 @@
 ------------------------------------------------------------ */
 
 /* ============================================================
-   PHASE 1 — GLOBAL TYPOGRAPHY
-   Modern SaaS pairing: Manrope (headings) + Inter (body/UI).
-   Loaded from Google Fonts. Overrides Prisma's --theme-font-*
-   variables so the pairing cascades site-wide without patching
-   every selector. Elementor per-element fonts are left intact.
+   PHASE A — DESIGN TOKENS  (FastSource identity, v1)
+   Single source of truth for the theme, ported from the Phase 1
+   brand guide (Fastsource identity/brandGuide.html). Everything
+   below — color, type, spacing, radii — reads from these tokens
+   so the whole site shifts by editing values here, not selectors.
+
+   NOTE: this replaces the earlier LIME accent (#B8E210) with the
+   identity's ROSE accent (#B11742). --fs-accent-dark is kept as a
+   back-compat alias so any older rule still resolves.
    ============================================================ */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap');
 
 :root {
+	/* — Type families — */
 	--fs-font-heading: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
 	--fs-font-body: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
-	--fs-accent: #B8E210;      /* lime-green brand accent */
-	--fs-accent-dark: #9ec10a; /* darker step for hover/contrast */
+
+	/* — Brand accent (rose) — */
+	--fs-accent: #B11742;        /* primary actions, CTAs, links */
+	--fs-accent-hover: #880D30;  /* hover / pressed */
+	--fs-accent-glow: #E07799;   /* highlights, focus rings, badges */
+	--fs-accent-dark: var(--fs-accent-hover); /* back-compat alias */
+
+	/* — Neutrals — */
+	--fs-ink: #16181C;      /* primary text / dark ground */
+	--fs-muted: #6B7078;    /* secondary text, captions */
+	--fs-paper: #FBFBF9;    /* warm off-white page canvas */
+	--fs-surface: #FFFFFF;  /* cards, panels, inputs */
+	--fs-border: rgba(22, 24, 28, 0.08);
+
+	/* — Semantic (hues kept clear of the 343° accent) — */
+	--fs-success: #1F9D66;  /* demo booked, form submitted */
+	--fs-warning: #E2A93B;  /* incomplete steps, caution */
+	--fs-error:   #DA4A3A;  /* failed submission, invalid field */
+	--fs-info:    #3B82C4;  /* neutral notices, tips */
+
+	/* — Dark-ground tokens —
+	   Defined for reuse on dark sections (the header, footers, CTA
+	   bands). NOT wired to a site-wide dark mode in Phase A — that
+	   scope decision is deferred to Phase C. */
+	--fs-dark-bg: #121316;
+	--fs-dark-surface: #1E2024;
+	--fs-dark-text: #FBFBF9;
+	--fs-dark-muted: #9BA0A8;
+	--fs-dark-accent: #E53566; /* accent brightened for dark canvas */
+
+	/* — Type scale (size / line-height / tracking) — */
+	--fs-h1: 56px;  --fs-h1-lh: 64px;  --fs-h1-ls: -0.02em;
+	--fs-h2: 40px;  --fs-h2-lh: 48px;  --fs-h2-ls: -0.01em;
+	--fs-h3: 28px;  --fs-h3-lh: 36px;  --fs-h3-ls: -0.01em;
+	--fs-h4: 22px;  --fs-h4-lh: 30px;
+	--fs-h5: 18px;  --fs-h5-lh: 26px;
+	--fs-body-l: 18px; --fs-body-l-lh: 28px;
+	--fs-body: 16px;   --fs-body-lh: 26px;
+	--fs-body-s: 14px; --fs-body-s-lh: 22px;
+	--fs-caption: 12px; --fs-caption-lh: 18px;
+	--fs-eyebrow: 13px; --fs-eyebrow-ls: 0.08em;
+
+	/* — Spacing scale (4px base) — */
+	--fs-space-1: 4px;   --fs-space-2: 8px;   --fs-space-3: 12px;
+	--fs-space-4: 16px;  --fs-space-5: 24px;  --fs-space-6: 32px;
+	--fs-space-7: 48px;  --fs-space-8: 64px;  --fs-space-9: 96px;
+	--fs-space-10: 128px;
+
+	/* — Radius scale — */
+	--fs-radius-sm: 6px;    /* buttons, inputs */
+	--fs-radius-md: 12px;   /* cards */
+	--fs-radius-lg: 20px;   /* panels, modals */
+	--fs-radius-xl: 28px;   /* hero panels */
+	--fs-radius-full: 999px;/* pills, avatars */
 }
 
 /* Map the theme's own font variables to our pairing so buttons,
@@ -178,7 +235,7 @@ p { line-height: 1.7; }
 	backdrop-filter: saturate(140%) blur(8px);
 	-webkit-backdrop-filter: saturate(140%) blur(8px);
 	box-shadow: 0 8px 28px rgba(0, 0, 0, 0.30);
-	border-bottom: 1px solid rgba(184, 226, 16, 0.28); /* accent hairline */
+	border-bottom: 1px solid rgba(177, 23, 66, 0.32); /* rose accent hairline */
 	animation: fsHeaderDrop 0.32s ease both;
 }
 
